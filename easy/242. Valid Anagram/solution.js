@@ -6,44 +6,40 @@
 
 // first solution
 
-var countCharacterOccurrences = function (str) {
-    var charCount = {};
+var sortSolution = function(s, t) {
+    // Sort the characters in the strings
+    const sortedStr1 = s.split('').sort().join('');
+    const sortedStr2 = t.split('').sort().join('');
 
-    for (var i = 0; i < str.length; i++) {
-        var char = str[i];
-
-        if (charCount[char]) {
-            charCount[char]++;
-        } else {
-            charCount[char] = 1;
-        }
-    }
-
-    return charCount;
+    // Compare the sorted strings
+    return sortedStr1 === sortedStr2;
 }
 
-var isAnagram = function (s, t) {
-    const firstCharCount = countCharacterOccurrences(s);
-    const secondCharCount = countCharacterOccurrences(t);
+// second solution
 
-    for (var char in firstCharCount) {
-        if (firstCharCount[char] !== secondCharCount[char]) {
-            return false;
-        }
+var isAnagram = function(s, t) {
+    if (s.length !== t.length) {
+        return false;
     }
 
-    for (var char in secondCharCount) {
-        if (!firstCharCount[char]) {
+    const counter = new Map();
+
+    for (let char of s) {
+        counter.set(char, (counter.get(char) || 0) + 1);
+    }
+
+    for (let char of t) {
+        if (!counter.has(char) || counter.get(char) === 0) {
             return false;
         }
+        counter.set(char, counter.get(char) - 1);
     }
 
     return true;
-
 };
 
-console.log(isAnagram("anagram", "nagaram"));
-console.log(isAnagram("rat", "car"));
-console.log(isAnagram("a", "ab"));
+// sample usage
 
-// second solution
+console.log(sortSolution("anagram", "nagaram"));
+console.log(hashMapSolution("rat", "car"));
+console.log(isAnagram("a", "ab"));
